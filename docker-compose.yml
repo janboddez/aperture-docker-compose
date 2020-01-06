@@ -1,0 +1,87 @@
+version: '3.2'
+
+services:
+  beanstalkd:
+    container_name: watchtower_beanstalkd_1
+    image: schickling/beanstalkd:latest
+    restart: unless-stopped
+
+  watchtower_db:
+    container_name: watchtower_db_1
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_DATABASE: watchtower
+      MYSQL_USER: watchtower
+      MYSQL_PASSWORD: ${WATCHTOWER_MYSQL_PASSWORD}
+    volumes:
+      - ./watchtower/db:/var/lib/mysql
+
+  watchtower:
+    container_name: watchtower_watchtower_1
+    image: janboddez/watchtower
+    depends_on:
+      - beanstalkd
+      - watchtower_db
+    restart: unless-stopped
+    ports:
+      - "${WATCHTOWER_PORT}:9000"
+    environment:
+      WATCHTOWER_URL: ${WATCHTOWER_URL}
+      MYSQL_HOST: watchtower_db_1
+      MYSQL_PASSWORD: ${WATCHTOWER_MYSQL_PASSWORD}
+      BEANSTALK_SERVER: watchtower_beanstalkd_1
+    volumes:
+      - ./watchtower/html:/var/www/html
+
+  camo:
+    container_name: aperture_camo_1
+    image: janboddez/camo
+    ports:
+      - '8081:8081'
+    restart: unless-stopped
+    environment:
+      CAMO_KEY: ${CAMO_KEY}
+
+  redis:
+    container_name: aperture_redis_1
+    image: redis:alpine
+    restart: unless-stopped
+    command: redis-server --requirepass ${APERTURE_REDIS_PASSWORD}
+
+  aperture_db:
+    container_name: aperture_db_1
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_DATABASE: aperture
+      MYSQL_USER: aperture
+      MYSQL_PASSWORD: ${APERTURE_MYSQL_PASSWORD}
+    volumes:
+      - ./aperture/db:/var/lib/mysql
+
+  aperture:
+    container_name: aperture_aperture_1
+    image: janboddez/aperture
+    depends_on:
+      - camo
+      - watchtower
+      - redis
+      - aperture_db
+    restart: unless-stopped
+    environment:
+      WATCHTOWER_URL: ${WATCHTOWER_URL}
+      WATCHTOWER_CB: ${APERTURE_URL}
+      WATCHTOWER_TOKEN: ${WATCHTOWER_TOKEN}
+      IMG_PROXY_URL: ${CAMO_URL}
+      IMG_PROXY_KEY: ${CAMO_KEY}
+      MYSQL_HOST: aperture_db_1
+      MYSQL_PASSWORD: ${APERTURE_MYSQL_PASSWORD}
+      REDIS_HOST: aperture_redis_1
+      REDIS_PASSWORD: ${APERTURE_REDIS_PASSWORD}
+    ports:
+      - "${APERTURE_PORT}:9000"
+    volumes:
+      - ./aperture/html:/var/www/html

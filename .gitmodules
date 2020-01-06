@@ -1,0 +1,6 @@
+[submodule "watchtower"]
+	path = watchtower
+	url = git@github.com:janboddez/watchtower.git
+[submodule "aperture"]
+	path = aperture
+	url = git@github.com:janboddez/aperture.git
