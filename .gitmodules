@@ -4,3 +4,6 @@
 [submodule "aperture"]
 	path = aperture
 	url = git@github.com:janboddez/aperture.git
+[submodule "camo"]
+	path = camo
+	url = https://github.com/atmos/camo.git
