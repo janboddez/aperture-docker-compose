@@ -36,11 +36,11 @@ Install the Watchtower service (on the host):
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
-*/5 * * * * docker exec watchtower_watchtower_1 /usr/local/bin/php /var/www/html/scripts/cron.php > /dev/null 2>&1
+*/5 * * * * docker exec watchtower_watchtower_1 php /var/www/html/scripts/cron.php > /dev/null 2>&1
 ```
 
 Once you've set up a token endpoint for your site, you can finally run:
 ```
-docker exec -ti aperture_aperture_1 php aperture/artisan create:user https://example.org/
+docker exec aperture_aperture_1 php aperture/artisan create:user https://example.org/
 ```
 Now all that's left is making sure `https://aperture.example.org`, `https://watchtower.example.org` and `https://camo.example.org` can actually be reached. (Via a web server, and DNS and things.)
