@@ -33,7 +33,6 @@ Install the Watchtower service (on the host):
 ```
 sudo cp ~/www/watchtower/build/service /etc/systemd/watchtower.service
 sudo systemctl enable watchtower
-sudo systemctl start watchtower
 ```
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
