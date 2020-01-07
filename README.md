@@ -31,7 +31,9 @@ docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate
 
 Install the Watchtower service (on the host):
 ```
-# TODO
+sudo cp ~/www/watchtower/build/service /etc/systemd/watchtower.service
+sudo systemctl enable watchtower
+sudo systemctl start watchtower
 ```
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
