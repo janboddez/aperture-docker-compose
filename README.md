@@ -1,7 +1,7 @@
 # aperture-docker-compose
 
 ## Installation
-Use something like this (but update the values inside `.env`—and, if needed, `docker-compose.yml`—before kicking off the build step):
+Use something like this:
 ```
 mkdir ~/www
 cd ~/www
@@ -12,7 +12,11 @@ git submodule init
 git submodule update
 
 cp .env.example .env
+```
+Update the values inside `.env`—and, if needed, `docker-compose.yml`—before kicking off the build step. Make sure the Camo URL ends in a trailing slash (and the Watchtower and Aperture URLs don't). Make sure to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do) as well.
 
+Launch the different containers:
+```
 docker-compose build
 docker-compose up -d
 ```
@@ -31,8 +35,11 @@ docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate
 
 Install the Watchtower service (on the host):
 ```
-# TODO
+sudo cp ~/www/watchtower/build/service /etc/systemd/watchtower.service
+sudo systemctl enable watchtower
+sudo systemctl start watchtower
 ```
+This last step, right now, takes 30 seconds because of a pre-start delay that can probably be much shorter. (Anyway, don't just terminate it if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
