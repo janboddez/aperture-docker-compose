@@ -13,7 +13,7 @@ git submodule update
 
 cp .env.example .env
 ```
-Update the values inside `.env`—and, if needed, `docker-compose.yml`—before kicking off the build step. Make sure the CAMO URL ends in a trailing slash (and the Watchtower and Aperture URLs don't). Make sure to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do).
+Update the values inside `.env`—and, if needed, `docker-compose.yml`—before kicking off the build step. Make sure the Camo URL ends in a trailing slash (and the Watchtower and Aperture URLs don't). Make sure to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do) as well.
 
 Launch the different containers:
 ```
