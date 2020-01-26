@@ -17,7 +17,7 @@ Then, before kicking off the build step, update the values inside `.env`—and, 
 
 This little README assumes your main site lives at `https://example.org` and that Aperture will be set up at `https://aperture.example.org`, Watchtower at `https://watchtower.example.org` and Camo at `https://camo.example.org`. You'll want to replace those four URLs with your own, and eventuall refer to Aperture from your main site like so:
 ```
-&lt;link rel=&quot;microsub&quot; href=&quot;https://aperture.example.org/microsub/1&quot;&gt;
+<link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
 
 Make sure:
@@ -31,7 +31,7 @@ docker-compose up -d
 ```
 All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set.
 
-Set up and prepare both databases (replace `1234` with your token of choice—see`.env`):
+Set up and prepare both databases (replace `1234` with your token of choice—see `.env`):
 ```
 docker exec -i watchtower_db_1 mysql -u watchtower -psome-random-password watchtower < ./watchtower/html/schema/schema.sql
 docker exec watchtower_db_1 mysql -u watchtower -psome-random-password watchtower -e "INSERT INTO users (url, token, created_at) values ('https://aperture.example.org', '1234', NOW());"
