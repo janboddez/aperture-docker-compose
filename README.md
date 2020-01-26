@@ -42,7 +42,6 @@ docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate
 
 Install the Watchtower service (on the host):
 ```
-chmod +x ~/www/watchtower/build/watchtower.service
 sudo cp ~/www/watchtower/build/watchtower.service /etc/systemd/watchtower.service
 sudo systemctl enable watchtower
 sudo systemctl start watchtower
