@@ -20,7 +20,7 @@ This little README assumes your main site lives at `https://example.org` and tha
 <link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
 
-Make sure:
+Make sure, when editing `.env`:
 - the Camo URL ends in a trailing slash (and the Watchtower and Aperture URLs don't)
 - to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do)
 
