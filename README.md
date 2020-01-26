@@ -55,6 +55,11 @@ And add the following Watchtower cron job (again, on the host), using `crontab -
 */5 * * * * docker exec watchtower_watchtower_1 php /var/www/html/scripts/cron.php > /dev/null 2>&1
 ```
 
+To make sure Aperture and its dependencies automatically start after a reboot, you may also want to add:
+```
+@reboot cd ~/www && docker-compose up -d
+```
+
 Once you've set up a token endpoint for your site, you can finally run:
 ```
 docker exec aperture_aperture_1 php aperture/artisan create:user https://example.org/
