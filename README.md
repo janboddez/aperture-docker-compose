@@ -1,4 +1,5 @@
-# aperture-docker-compose
+# Aperture (docker-compose)
+Run Aperture—an IndieWeb feed aggregator—using Docker and docker-compose.
 
 ## Installation
 Use something like this:
