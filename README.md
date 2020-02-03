@@ -50,7 +50,7 @@ sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
 
-This last step, right now, takes 15 seconds because of a pre-start delay. Reason for this rather random number was the time it takes for the files and dependencies and settings to be downloaded after the containers are first brought up. (Anyway, don't just terminate it if nothing seems to happen.)
+This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, don't just terminate it if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
@@ -73,10 +73,3 @@ Finally, refer to Aperture from your main site, like so:
 ```
 <link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
-
-## Updates
-There are _no official update instructions_ (other than "wait for new prebuilt images"), but ...
-
-Technically, you should be able to just `cd` into `~/www/aperture/html` or `~/www/watchtower/html` and execute `sudo git pull` and then `cd`, if needed, into whatever folder holds `composer.json` and run `docker run --rm --it -v $PWD:/app composer install`, and finally  `sudo chown -R 82:82 .`. This last step ensures the PHP-FPM containers have proper access to all PHP files. (The `82` refers to the `www-data` user inside 'em.)
-
-It's probably much easier, however, to just run `docker-compose down` and remove the `html` folders, and then bring everything back up again. If the code didn't change too drastically and the main `.env` file was left untouched, all of the necessary config files should be automatically recreated, and all that's left to do is generate a new application key—`docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate`.
