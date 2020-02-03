@@ -75,7 +75,7 @@ Finally, refer to Aperture from your main site, like so:
 ```
 
 ## Updates
-There are no official update instructions, but ...
+There are _no official update instructions_ (other than "wait for new prebuilt images"), but ...
 
 Technically, you should be able to just `cd` into `~/www/aperture/html` or `~/www/watchtower/html` and execute `sudo git pull` and then `cd`, if needed, into whatever folder holds `composer.json` and run `docker run --rm --it -v $PWD:/app composer install`, and finally  `sudo chown -R 82:82 .`. This last step ensures the PHP-FPM containers have proper access to all PHP files. (The `82` refers to the `www-data` user inside 'em.)
 
