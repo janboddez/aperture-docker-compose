@@ -22,6 +22,8 @@ Make sure, when editing `.env`:
 - the Camo URL ends in a trailing slash (and the Watchtower and Aperture URLs don't)
 - to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do)
 
+If you're going to go with the prebuilt images in Docker's repository, comment out the `build` entries for `camo`, `aperture`, and `watchtower` in `docker-compose.yml`. (This'll save you some time.)
+
 Launch the different containers:
 ```
 docker-compose build
