@@ -71,3 +71,10 @@ Finally, refer to Aperture from your main site, like so:
 ```
 <link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
+
+## Updates
+There are no official update instructions, but ...
+
+Technically, you should be able to just `cd` into `~/www/aperture/html` or `~/www/watchtower/html` and execute `sudo git pull` and then `cd`, if needed, into whatever folder holds `composer.json` and run `docker run --rm --it -v $PWD:/app composer install`, and finally  `sudo chown -R 82:82 .`. This last step ensures the PHP-FPM containers have proper access to all PHP files. (The `82` refers to the `www-data` user inside 'em.)
+
+It's probably much easier, however, to just run `docker-compose down` and remove the `html` folders, and then bring everything back up again. If the code didn't change too drastically and the main `.env` file was left untouched, all of the necessary config files should be automatically recreated, and all that's left to do is generate a new application key—`docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate`.
