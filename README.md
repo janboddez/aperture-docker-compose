@@ -27,7 +27,7 @@ Launch the different containers:
 docker-compose build
 docker-compose up -d
 ```
-All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, wait a minute or two before moving on.
+All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, maybe wait a minute or two before moving on?
 
 Now, set up and prepare both databases (replace `1234` with your token of choice—see `.env`). First Watchtower's:
 ```
