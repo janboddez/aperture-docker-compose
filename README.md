@@ -27,7 +27,7 @@ Launch the different containers:
 docker-compose build
 docker-compose up -d
 ```
-All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set.
+All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, wait a minute or two before moving on.
 
 Now, set up and prepare both databases (replace `1234` with your token of choice—see `.env`). First Watchtower's:
 ```
@@ -48,7 +48,7 @@ sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
 
-This last step, right now, takes 15 seconds because of a pre-start delay that could probably be shorter. (Anyway, don't just terminate it if nothing seems to happen.)
+This last step, right now, takes 15 seconds because of a pre-start delay. Reason for this rather random number was the time it takes for the files and dependencies and settings to be downloaded after the containers are first brought up. (Anyway, don't just terminate it if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
