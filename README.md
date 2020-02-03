@@ -48,7 +48,7 @@ sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
 
-This last step, right now, takes 30 seconds because of a pre-start delay that can probably be much shorter. (Anyway, don't just terminate it if nothing seems to happen.)
+This last step, right now, takes 15 seconds because of a pre-start delay that could probably be shorter. (Anyway, don't just terminate it if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
