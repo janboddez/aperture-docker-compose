@@ -22,12 +22,14 @@ Make sure, when editing `.env`:
 - the Camo URL ends in a trailing slash (and the Watchtower and Aperture URLs don't)
 - to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do)
 
+If you're going to go with the prebuilt images in Docker's repository, comment out the `build` entries for `camo`, `aperture`, and `watchtower` in `docker-compose.yml`. (This'll save you some time.)
+
 Launch the different containers:
 ```
 docker-compose build
 docker-compose up -d
 ```
-All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set.
+All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, maybe wait a minute or two before moving on?
 
 Now, set up and prepare both databases (replace `1234` with your token of choice—see `.env`). First Watchtower's:
 ```
@@ -48,7 +50,7 @@ sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
 
-This last step, right now, takes 15 seconds because of a pre-start delay that could probably be shorter. (Anyway, don't just terminate it if nothing seems to happen.)
+This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, don't just terminate it if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
@@ -71,10 +73,3 @@ Finally, refer to Aperture from your main site, like so:
 ```
 <link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
-
-## Updates
-There are no official update instructions, but ...
-
-Technically, you should be able to just `cd` into `~/www/aperture/html` or `~/www/watchtower/html` and execute `sudo git pull` and then `cd`, if needed, into whatever folder holds `composer.json` and run `docker run --rm --it -v $PWD:/app composer install`, and finally  `sudo chown -R 82:82 .`. This last step ensures the PHP-FPM containers have proper access to all PHP files. (The `82` refers to the `www-data` user inside 'em.)
-
-It's probably much easier, however, to just run `docker-compose down` and remove the `html` folders, and then bring everything back up again. If the code didn't change too drastically and the main `.env` file was left untouched, all of the necessary config files should be automatically recreated, and all that's left to do is generate a new application key—`docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate`.
