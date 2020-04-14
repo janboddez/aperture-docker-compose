@@ -1,9 +1,9 @@
 [submodule "watchtower"]
 	path = watchtower
-	url = git@github.com:janboddez/watchtower.git
+	url = git@github.com:janboddez/watchtower-docker.git
 [submodule "aperture"]
 	path = aperture
-	url = git@github.com:janboddez/aperture.git
+	url = git@github.com:janboddez/aperture-docker.git
 [submodule "camo"]
 	path = camo
 	url = https://github.com/atmos/camo.git
