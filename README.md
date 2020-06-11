@@ -29,7 +29,7 @@ docker-compose up -d
 ```
 All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, maybe wait a minute or two before moving on?
 
-Now, set up and prepare both databases. (Replace `1234` with your token of choice—see `.env`. The same goes your Watchtower database password.) First Watchtower's:
+Now, set up and run migrations for both databases. First up is Watchtower's. (Replace `1234` with your token of choice—see `.env`. The same goes your Watchtower database password.)
 ```
 docker exec -i watchtower_db_1 mysql -u watchtower -psome-random-password watchtower < ./watchtower/html/schema/schema.sql
 docker exec watchtower_db_1 mysql -u watchtower -psome-random-password watchtower -e "INSERT INTO users (url, token, created_at) values ('https://aperture.example.org', '1234', NOW());"
