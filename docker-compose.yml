@@ -36,16 +36,6 @@ services:
     volumes:
       - ./watchtower/html:/var/www/html
 
-  camo:
-    container_name: aperture_camo_1
-    image: janboddez/camo
-    build: camo
-    ports:
-      - '8081:8081'
-    restart: unless-stopped
-    environment:
-      CAMO_KEY: ${CAMO_KEY}
-
   redis:
     container_name: aperture_redis_1
     image: redis:alpine
@@ -69,7 +59,6 @@ services:
     image: janboddez/aperture
     build: aperture/build
     depends_on:
-      - camo
       - watchtower
       - redis
       - aperture_db
