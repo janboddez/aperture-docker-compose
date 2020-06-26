@@ -38,8 +38,8 @@ docker exec watchtower_db_1 mysql -u watchtower -psome-random-password watchtowe
 
 And then Aperture's.
 ```
-docker exec aperture_aperture_1 php /var/www/html/aperture/artisan migrate
-docker exec aperture_aperture_1 php /var/www/html/aperture/artisan key:generate
+docker exec -ti aperture_aperture_1 php aperture/artisan migrate
+docker exec aperture_aperture_1 php aperture/artisan key:generate
 ```
 
 Install the Watchtower service (on the host). This'll make sure Watchtower (inside its container) keeps doing its thing:
