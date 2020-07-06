@@ -41,13 +41,15 @@ And then Aperture's.
 docker exec -ti aperture_aperture_1 php aperture/artisan migrate
 docker exec aperture_aperture_1 php aperture/artisan key:generate
 ```
+Note: The `-ti` bit in the first command _is_ important; it'll lead Artisan to ask for your permission running the migrations in a "production" environment—tell it "yes"!
 
-Install the Watchtower service (on the host). This'll make sure Watchtower (inside its container) keeps doing its thing:
+Install the Watchtower service (on the host). At least on Ubuntu, this'll make sure Watchtower (inside its container) keeps doing its thing:
 ```
 sudo cp ~/www/watchtower/build/watchtower.service /etc/systemd/watchtower.service
 sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
+Note: If you're on [Rootless Docker](https://docs.docker.com/engine/security/rootless/), this isn't entirely true. (You'll have to use `systemctl --user`, but also the content of `watchtower.service` will need tweaked!)
 
 This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, _don't just terminate it_ if nothing seems to happen.)
 
