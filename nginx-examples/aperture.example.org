@@ -1,0 +1,59 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name aperture.example.org;
+
+	error_log /var/log/nginx/aperture.example.org_error.log error;
+	access_log /var/log/nginx/aperture.example.org_access.log;
+
+	location / { return 301 https://$host$request_uri; }
+}
+
+server {
+	listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+
+	server_name aperture.example.org;
+
+	error_log /var/log/nginx/aperture.example.org_ssl_error.log error;
+	access_log /var/log/nginx/aperture.example.org_ssl_access.log;
+
+	add_header Referrer-Policy origin;
+
+	ssl_certificate /etc/letsencrypt/live/aperture.example.org/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/aperture.example.org/privkey.pem;
+
+	root /home/aperture/www/aperture/html/aperture/public;
+
+	index index.php;
+	try_files $uri $uri/ =404;
+
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+	location ~ \.php$ {
+		fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+		try_files $fastcgi_script_name =404;
+		fastcgi_param HTTP_PROXY "";
+		fastcgi_pass 127.0.0.1:9002;
+		fastcgi_index index.php;
+		include fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME /var/www/html/aperture/public/$fastcgi_script_name;
+	}
+
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+		log_not_found off;
+	}
+
+	location = /favicon.ico {
+		log_not_found off;
+		access_log off;
+	}
+
+	location = /robots.txt {
+		log_not_found off;
+		access_log off;
+	}
+}
