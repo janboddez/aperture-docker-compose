@@ -31,8 +31,8 @@ All files and dependencies are fetched the first time the containers are brought
 
 Now, set up and run migrations for both databases. First up is Watchtower's. (Replace `1234` with your token of choice—see `.env`. The same goes your Watchtower database password: use the one you've specified earlier, in `.env`.)
 ```
-docker exec -i watchtower_db_1 mysql -u watchtower -psome-random-password watchtower < ./watchtower/html/schema/schema.sql
-docker exec watchtower_db_1 mysql -u watchtower -psome-random-password watchtower -e "INSERT INTO users (url, token, created_at) values ('https://aperture.example.org', '1234', NOW());"
+docker exec -i watchtower_db_1 mysql -u watchtower -p<some-random-password> watchtower < ./watchtower/html/schema/schema.sql
+docker exec watchtower_db_1 mysql -u watchtower -p<some-random-password> watchtower -e "INSERT INTO users (url, token, created_at) values ('https://aperture.example.org', '1234', NOW());"
 ```
 (I know, you _shouldn't_ just type passwords into a terminal like that, but doing so allows us to set everything up with a single command. Feel free to run `history -c` afterward to make your system forget.)
 
@@ -70,7 +70,7 @@ docker exec aperture_aperture_1 php aperture/artisan create:user https://example
 
 Now all that's left is making sure `https://aperture.example.org` and `https://watchtower.example.org` can actually be reached. Two example NGINX config files can be found in `nginx-examples`. Feel free to drop these in your host system's `/etc/nginx/sites-available` and create the needed symlinks in `/etc/nginx/sites-enabled`. Or configure everything your way.
 
-The examples, by the way, assume that the user all of the above was run under is named `aperture`. (E.g., the `root` directive points at `/home/aperture/www` and so on.) And that Watchtower runs on port 9001, and Aperture on 9002. (You'd of course use the values in the `.env` file. And adapt all URLs. And make sure all of the necessary certificates are in place.)
+The examples, by the way, assume that the user all of the above was run under is named `aperture`. (E.g., the `root` directives point to `/home/aperture/www/<and-so-on>`.) And that Watchtower runs on port 9001, and Aperture on 9002. (You'd of course use the values in the `.env` file. And adapt all URLs. And make sure all of the necessary certificates are in place.)
 
 Finally, refer to Aperture from your main site, like so:
 ```
