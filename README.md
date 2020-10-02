@@ -68,7 +68,9 @@ Almost there! Once you've set up a token endpoint for your site, run:
 docker exec aperture_aperture_1 php aperture/artisan create:user https://example.org/
 ```
 
-Now all that's left is making sure `https://aperture.example.org` and `https://watchtower.example.org` can actually be reached. Two example NGINX config files can be found in `nginx-examples`. These assume that the user all of the above was run under is named `aperture`. (E.g., the `root` directive points at `/home/aperture/www` and so on.) And that Watchtower runs on port 9001, and Aperture on 9002. (You'd of course use the values in the `.env` file.)
+Now all that's left is making sure `https://aperture.example.org` and `https://watchtower.example.org` can actually be reached. Two example NGINX config files can be found in `nginx-examples`. Feel free to drop these in your host system's `/etc/nginx/sites-available` and create the needed symlinks in `/etc/nginx/sites-enabled`. Or configure everything your way.
+
+The examples, by the way, assume that the user all of the above was run under is named `aperture`. (E.g., the `root` directive points at `/home/aperture/www` and so on.) And that Watchtower runs on port 9001, and Aperture on 9002. (You'd of course use the values in the `.env` file. And adapt all URLs. And make sure all of the necessary certificates are in place.)
 
 Finally, refer to Aperture from your main site, like so:
 ```
