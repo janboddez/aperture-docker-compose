@@ -16,7 +16,7 @@ cp .env.example .env
 ```
 Then, before kicking off the build step, update the values inside `.env`—and, if needed, `docker-compose.yml`.
 
-This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace these three URLs with your own.
+This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace these three URLs with your own. It also assumes you're running all of this under the user `aperture`.
 
 Make sure, when editing `.env`, to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do). Or modify `docker-compose.yml` according to your preferred setup.
 
@@ -49,7 +49,7 @@ sudo cp ~/www/watchtower/build/watchtower.service /etc/systemd/watchtower.servic
 sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
-Note: If you're on [Rootless Docker](https://docs.docker.com/engine/security/rootless/), this isn't entirely true. (You'll have to use `systemctl --user`, but also the content of `watchtower.service` will need tweaked!)
+Note: If you're on [Rootless Docker](https://docs.docker.com/engine/security/rootless/), this isn't entirely true. You'll have to use `systemctl --user` and use the `watchtower.service-user` file instead! (Rename that to `watchtower.service`, and make sure to edit it—add in your user ID, and replace `aperture` with your username.)
 
 This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, _don't just terminate it_ if nothing seems to happen.)
 
