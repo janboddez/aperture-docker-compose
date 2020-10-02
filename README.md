@@ -16,7 +16,7 @@ cp .env.example .env
 ```
 Then, before kicking off the build step, update the values inside `.env`—and, if needed, `docker-compose.yml`.
 
-This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace those three URLs with your own.
+This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace these three URLs with your own.
 
 Make sure, when editing `.env`, to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do). Or modify `docker-compose.yml` according to your preferred setup.
 
@@ -68,7 +68,7 @@ Almost there! Once you've set up a token endpoint for your site, run:
 docker exec aperture_aperture_1 php aperture/artisan create:user https://example.org/
 ```
 
-Now all that's left is making sure `https://aperture.example.org` and `https://watchtower.example.org` can actually be reached. (Via a web server, and DNS and things.)
+Now all that's left is making sure `https://aperture.example.org` and `https://watchtower.example.org` can actually be reached. Two example NGINX config files can be found in `nginx-examples`. These assume that the user all of the above was run under is named `aperture`. (E.g., the `root` directive points at `/home/aperture/www` and so on.) And that Watchtower runs on port 9001, and Aperture on 9002. (You'd of course use the values in the `.env` file.)
 
 Finally, refer to Aperture from your main site, like so:
 ```
