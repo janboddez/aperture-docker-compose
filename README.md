@@ -49,8 +49,15 @@ sudo cp ~/www/watchtower/build/watchtower.service /etc/systemd/watchtower.servic
 sudo systemctl enable watchtower
 sudo systemctl start watchtower
 ```
-Note: If you're on [Rootless Docker](https://docs.docker.com/engine/security/rootless/), this isn't entirely true. You'll have to use `systemctl --user` and use the `watchtower.service-user` file instead! (Rename that to `watchtower.service`, and make sure to edit it—add in your user ID, and replace `aperture` with your username.)
-
+Note: If you're on [Rootless Docker](https://docs.docker.com/engine/security/rootless/), this isn't entirely true. Provided you've correctly got Rootless Docker to run, this should get you on your way:
+```
+cp ~/www/watchtower/build/watchtower.service-user ~/.config/systemd/user/watchtower.service
+```
+Then edit the new `watchtower.service` file. Add in your actual user ID, and replace `aperture` with your username—your Linux UID and name, that is.
+```
+systemctl --user enable watchtower
+systemctl --user start watchtower
+```
 This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, _don't just terminate it_ if nothing seems to happen.)
 
 And add the following Watchtower cron job (again, on the host), using `crontab -e`:
