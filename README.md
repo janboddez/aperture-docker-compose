@@ -29,7 +29,7 @@ docker-compose up -d
 ```
 All files and dependencies are fetched the first time the containers are brought up, and configs are automatically set. This takes a while, so, er, maybe wait a minute or two before moving on?
 
-Now, set up and run migrations for both databases. First up is Watchtower's. (Replace `1234` with your token of choice—see `.env`. The same goes your Watchtower database password: use the one you've specified earlier, in `.env`.)
+Now, set up and run migrations for both databases. First up is Watchtower's. (Replace `1234` with your token of choice—see `.env`. The same goes for your Watchtower database password: use the one you've specified earlier, in `.env`.)
 ```
 docker exec -i watchtower_db_1 mysql -u watchtower -p<some-random-password> watchtower < ./watchtower/html/schema/schema.sql
 docker exec watchtower_db_1 mysql -u watchtower -p<some-random-password> watchtower -e "INSERT INTO users (url, token, created_at) values ('https://aperture.example.org', '1234', NOW());"
@@ -83,3 +83,10 @@ Finally, refer to Aperture from your main site, like so:
 ```
 <link rel="microsub" href="https://aperture.example.org/microsub/1">
 ```
+
+## Caveats
+When these images are first set up, they don't actually contain any app code. There's a real possibilty that future Aperture updates are incompatible with the `docker-entrypoint.sh` scripts in the containers. If that's the case, I'm going to have to start versioning the containers. (Aperture itself is still being developed and not versioned.)
+
+This also somewhat complicates updating. On the one hand, it's probably possible bring all containers down, delete everything inside the `html` folders that are created in `www/watchtower` and `www/aperture`, and bring everything back up. As long as the database folders aren't touched, you'd only have to run `docker exec -ti aperture_aperture_1 php aperture/artisan key:generate`. (Regenerating an app key for existing apps isn't actually recommended, but I don't think it hurts in this case.)
+
+Alternatively, you could enter the Watchtower and Aperture containers and, once inside, run composer update --no-dev. In Aperture's case, `cd` into the `aperture` subfolder first. Make sure you do this as the user with uid 82 (i.e., `www-data` inside the containers), though, or properly chown everything in `html` (on the host) afterward. Otherwise, the containers' `www-data` user won't be able to move or write to files.
