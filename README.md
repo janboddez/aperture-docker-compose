@@ -85,7 +85,7 @@ Finally, refer to Aperture from your main site, like so:
 ```
 
 ## Caveat
-When these images are first set up, they don't actually contain any app code. There's a real possibilty that future Aperture updates are incompatible with the `docker-entrypoint.sh` scripts in the containers. If that's the case, I'm going to have to start versioning the containers. (Aperture itself is still being developed and not versioned.)
+When these containers are first set up, they don't actually contain any app code. There's a real possibilty that future Aperture updates are incompatible with the `docker-entrypoint.sh` scripts in the images. If that's the case, I'm going to have to start versioning the containers. (Aperture itself is still being developed and not versioned.)
 
 This also somewhat complicates updating. On the one hand, it's probably possible bring all containers down, delete everything inside the `html` folders that are created in `www/watchtower` and `www/aperture`, and bring everything back up. As long as the database folders aren't touched, you'd only have to run `docker exec -ti aperture_aperture_1 php aperture/artisan key:generate`. (Regenerating an app key for existing apps isn't actually recommended, but I don't think it hurts in this case.)
 
