@@ -40,10 +40,10 @@ docker exec watchtower_db_1 mysql -u watchtower -p<some-random-password> watchto
 
 And then Aperture's.
 ```
-docker exec -ti aperture_aperture_1 php aperture/artisan migrate
+docker exec -i aperture_aperture_1 php aperture/artisan migrate
 docker exec aperture_aperture_1 php aperture/artisan key:generate
 ```
-Note: The `-ti` bit in the first command _is_ important; it'll lead Artisan to ask for your permission running the migrations in a "production" environment—tell it "yes"!
+Note: The `-i` bit in the first command _is_ important; it'll lead Artisan to ask for your permission running the migrations in a "production" environment—tell it "yes"!
 
 Install the Watchtower service (on the host). At least on Ubuntu, this'll make sure Watchtower (inside its container) keeps doing its thing:
 ```
@@ -61,8 +61,11 @@ systemctl --user enable watchtower
 systemctl --user start watchtower
 ```
 This last step, right now, takes 15 seconds because of a pre-start delay that may or may not make sense. (Anyway, _don't just terminate it_ if nothing seems to happen.)
-
-And add the following Watchtower cron job (again, on the host), using `crontab -e`:
+***
+### Remark: Laravel Queues
+It's possible to use a similar systemd service to keep Aperture's queuing system going, should you switch from the default `sync` driver (i.e., no queuing) to, e.g., `redis` or `database`. More details to follow.
+***
+Then, add the following Watchtower cron job (again, on the host), using `crontab -e`:
 ```
 */5 * * * * docker exec watchtower_watchtower_1 php /var/www/html/scripts/cron.php > /dev/null 2>&1
 ```
@@ -89,6 +92,6 @@ Finally, refer to Aperture from your main site, like so:
 ## Caveat
 When these containers are first set up, they don't actually contain any app code. There's a real possibilty that future Aperture updates are incompatible with the `docker-entrypoint.sh` scripts in the images. If that's the case, I'm going to have to start versioning the containers, and, possibly, ship the code inside. (Aperture itself is still being developed and not versioned.)
 
-This also somewhat complicates updating. It is currently possible to bring all containers down, delete the `html` folders that are created in `www/watchtower` and `www/aperture` the first time the containers run, and bring everything back up. As long as the `db` folders aren't touched, you'd only have to run `docker exec -ti aperture_aperture_1 php aperture/artisan key:generate` after `www/aperture/.env` is recreated, or restore the `.env` file from a backup _after the app code's been downloaded and all dependencies installed, which happens automatically but may take a while_. (Regenerating an app key in production isn't quite recommended, but I don't think it _hurts_ in this case.)
+This also somewhat complicates updating. It is currently possible to bring all containers down, delete the `html` folders that are created in `www/watchtower` and `www/aperture` the first time the containers run, and bring everything back up. As long as the `db` folders aren't touched, you'd only have to run `docker exec -ti aperture_aperture_1 php aperture/artisan key:generate` _after_ `www/aperture/.env` is recreated. (Regenerating an app key in production isn't quite recommended, but I don't think it _hurts_ in this case.)
 
-Alternatively, you could enter the Watchtower and Aperture containers as `www-data` and, once inside, run `git pull` and `composer install --no-dev`. In Aperture's case, `cd` into the `aperture` subfolder first before running `composer`.
+Alternatively, you could enter the Watchtower and Aperture containers as `www-data` (!) and, once inside, run `git pull` and `composer install --no-dev`. In Aperture's case, `cd` into the `aperture` subfolder first before running `composer`.
