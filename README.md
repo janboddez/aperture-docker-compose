@@ -2,6 +2,10 @@
 Run Aperture—an IndieWeb feed aggregator—using Docker and docker-compose.
 
 ## Installation
+This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace these three URLs with your own.
+
+It also assumes you're running all of this under the user `aperture`. This mostly affects the provided [NGINX configuration](https://github.com/janboddez/aperture-docker-compose/tree/master/nginx-examples) files, which serve as examples only, and the Watchtower [user service](https://github.com/janboddez/watchtower-docker/blob/master/build/watchtower.service-user) file.
+
 Use something like this:
 ```
 mkdir ~/www
@@ -15,8 +19,6 @@ git submodule update
 cp .env.example .env
 ```
 Then, before kicking off the build step, update the values inside `.env`—and, if needed, `docker-compose.yml`.
-
-This little README assumes your main site lives at `https://example.org`, and that Aperture will be set up at `https://aperture.example.org` and Watchtower at `https://watchtower.example.org`. You'll want to replace these three URLs with your own. It also assumes you're running all of this under the user `aperture`.
 
 Make sure, when editing `.env`, to fill out an actual Redis password (the way `docker-compose.yml` is set up, `null` won't do). Or modify `docker-compose.yml` according to your preferred setup.
 
